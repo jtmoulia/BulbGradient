@@ -14,7 +14,9 @@
 
 (defn angle-from-vertical [pt1 pt2]
   (let [[dx dy] (minus pt1 pt2)]
-    (atan (/ dx dy))))
+    (if (= dy 0.0)
+      (/ Math/PI  2)
+      (atan (/ dx dy)))))
 
 (defn translate-pt [pt dxdy]
   (plus pt dxdy))
@@ -32,17 +34,15 @@
     (map rec-to-map data)))
 
 
+(defn test-run []
+  (-main "data/example-ypts.csv" "data/example-data.csv"))
 
-
-;; (defn test-run []
-;;   (-main "data/example-ypts.csv" "data/example-data.csv"))
-
-;; (defn -main [y-axis-file glomeruli-file & args]
-;;   (let [[ypt1 ypt2] (to-matrix (read-dataset y-axis-file :header false))
-;;         glom-data (glom-data-to-map
-;;                    (to-matrix (read-dataset glomeruli-file :header false)))]
-;;     (let [rot-rads (- (angle-from-vertical ypt1 ypt2))
-;;           rot-ypt1 (rotate-point (trans ypt1) rot-rads)
-;;           rot-ypt2 (rotate-point (trans ypt2) rot-rads)
-;;           center (calc-bulb-center rot-ypt1 rot-ypt2)]
-;;       [rot-rads rot-ypt1 rot-ypt2 center])))
+(defn -main [y-axis-file glomeruli-file & args]
+  (let [[ypt1 ypt2] (to-matrix (read-dataset y-axis-file :header false))
+        glom-data (glom-data-to-map
+                   (to-matrix (read-dataset glomeruli-file :header false)))]
+    (let [rot-rads (- (angle-from-vertical ypt1 ypt2))
+          rot-ypt1 (rotate-point (trans ypt1) rot-rads)
+          rot-ypt2 (rotate-point (trans ypt2) rot-rads)
+          center (calc-bulb-center rot-ypt1 rot-ypt2)]
+      [rot-rads rot-ypt1 rot-ypt2 center])))

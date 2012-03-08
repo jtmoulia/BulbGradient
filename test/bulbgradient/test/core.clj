@@ -13,3 +13,11 @@
           (matrix [-1 0])))
   (is (= (matrix (rotate-point [1 0] (/ Math/PI 2)))
          (matrix [0 1]))))
+
+(deftest angle-from-vertical-test
+  (is (= (angle-from-vertical [0 1] [0 0])
+         0.0))
+  (is (= (angle-from-vertical [0 -1] [0 1])
+         0.0))
+  (is (= (angle-from-vertical [1 0] [0 0])
+         (/ Math/PI 2))))
